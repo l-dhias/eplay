@@ -1,4 +1,4 @@
-import { TagContainer } from './stylex'
+import { TagContainer } from './styles'
 
 export type Props = {
   size?: 'small' | 'big'
