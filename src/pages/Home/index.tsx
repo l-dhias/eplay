@@ -1,104 +1,31 @@
 import Banner from '../../components/Banner'
 import ProductsList from '../../components/ProductsList'
-import Game from '../../models/Games'
 
-import resident from '../../assets/images/resident.png'
-import diablo from '../../assets/images/diablo.png'
-import zelda from '../../assets/images/zelda.png'
-import starWars from '../../assets/images/star_wars.png'
+import { useGetOnSaleQuery, useGetSoonQuery } from '../../services/api'
 
-const promoçoes: Game[] = [
-  {
-    id: 1,
-    category: 'Ação',
-    description:
-      'Residente Evil 4, conhecido no japão como Biohazard 4, é um jogo de survival horror desenvolvido pela Capcom...',
-    title: 'Residente Evil 4',
-    system: 'windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: resident
-  },
-  {
-    id: 2,
-    category: 'Ação',
-    description:
-      'Residente Evil 4, conhecido no japão como Biohazard 4, é um jogo de survival horror desenvolvido pela Capcom...',
-    title: 'Residente Evil 4',
-    system: 'PS5',
-    infos: ['5%', 'R$ 290,00'],
-    image: resident
-  },
-  {
-    id: 3,
-    category: 'Ação',
-    description:
-      'Residente Evil 4, conhecido no japão como Biohazard 4, é um jogo de survival horror desenvolvido pela Capcom...',
-    title: 'Residente Evil 4',
-    system: 'windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: resident
-  },
-  {
-    id: 4,
-    category: 'Ação',
-    description:
-      'Residente Evil 4, conhecido no japão como Biohazard 4, é um jogo de survival horror desenvolvido pela Capcom...',
-    title: 'Residente Evil 4',
-    system: 'windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: resident
-  }
-]
+const Home = () => {
+  const { data: onSaleGames, isLoading: isLoadingSale } = useGetOnSaleQuery()
+  const { data: soonGames, isLoading: isLoadingSoon } = useGetSoonQuery()
 
-const emBreve: Game[] = [
-  {
-    id: 5,
-    category: 'RPG',
-    description:
-      'Diablo IV é um jogo eletrônico de RPG de ação desenvolvido pela Blizzard Entertainment. É o quarto título principal da série Diablo...',
-    title: 'Diablo IV',
-    system: 'windows',
-    infos: ['17/05'],
-    image: diablo
-  },
-  {
-    id: 6,
-    category: 'RPG',
-    description:
-      'Diablo IV é um jogo eletrônico de RPG de ação desenvolvido pela Blizzard Entertainment. É o quarto título principal da série Diablo...',
-    title: 'Zelda: Tears of the Kingdom',
-    system: 'windows',
-    infos: ['17/05'],
-    image: zelda
-  },
-  {
-    id: 7,
-    category: 'RPG',
-    description:
-      'Diablo IV é um jogo eletrônico de RPG de ação desenvolvido pela Blizzard Entertainment. É o quarto título principal da série Diablo...',
-    title: 'Star Wars Jedi: Survivor',
-    system: 'windows',
-    infos: ['17/05'],
-    image: starWars
-  },
-  {
-    id: 8,
-    category: 'RPG',
-    description:
-      'Diablo IV é um jogo eletrônico de RPG de ação desenvolvido pela Blizzard Entertainment. É o quarto título principal da série Diablo...',
-    title: 'Resident Evil 4 Remake',
-    system: 'Nintendo Switch',
-    infos: ['17/05'],
-    image: resident
-  }
-]
-
-const Home = () => (
-  <>
-    <Banner />
-    <ProductsList games={promoçoes} title="Promoções" backgroundColor="gray" />
-    <ProductsList games={emBreve} title="embreve" backgroundColor="black" />
-  </>
-)
+  return (
+    <>
+      <Banner />
+      <ProductsList
+        games={onSaleGames}
+        title="Promoções"
+        background="gray"
+        id="on-sale"
+        isLoading={isLoadingSale}
+      />
+      <ProductsList
+        games={soonGames}
+        title="Em breve"
+        background="black"
+        id="coming-soon"
+        isLoading={isLoadingSoon}
+      />
+    </>
+  )
+}
 
 export default Home

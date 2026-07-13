@@ -1,33 +1,63 @@
-import Game from '../../models/Games'
+import { parseToBrl } from '../../utils'
+import Loader from '../Loader'
 import Product from '../Product'
 
-import { Container, List } from './styles'
+import * as S from './styles'
 
 export type Props = {
   title: string
-  backgroundColor: 'gray' | 'black'
-  games: Game[]
+  background: 'gray' | 'black'
+  games?: Game[]
+  id?: string
+  isLoading: boolean
 }
 
-const ProductsList = ({ backgroundColor, title, games }: Props) => (
-  <Container backgroundColor={backgroundColor}>
-    <div className="container">
-      <h2>{title}</h2>
-      <List>
-        {games.map((game) => (
-          <Product
-            key={game.id}
-            category={game.category}
-            description={game.description}
-            image={game.image}
-            system={game.system}
-            title={game.title}
-            infos={game.infos}
-          />
-        ))}
-      </List>
-    </div>
-  </Container>
-)
+const ProductsList = ({ background, title, games, id, isLoading }: Props) => {
+  const getGameTags = (game: Game) => {
+    const tags = []
+
+    if (game.release_date) {
+      tags.push(game.release_date)
+    }
+
+    if (game.prices.discount) {
+      tags.push(`${game.prices.discount}%`)
+    }
+
+    if (game.prices.current) {
+      tags.push(parseToBrl(game.prices.current))
+    }
+
+    return tags
+  }
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  return (
+    <S.Container id={id} background={background}>
+      <div className="container">
+        <h2>{title}</h2>
+        <S.List>
+          {games &&
+            games.map((game) => (
+              <li key={game.id}>
+                <Product
+                  id={game.id}
+                  category={game.details.category}
+                  description={game.description}
+                  image={game.media.thumbnail}
+                  infos={getGameTags(game)}
+                  system={game.details.system}
+                  title={game.name}
+                />
+              </li>
+            ))}
+        </S.List>
+      </div>
+    </S.Container>
+  )
+}
 
 export default ProductsList
